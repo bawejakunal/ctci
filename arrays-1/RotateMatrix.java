@@ -23,7 +23,7 @@ public class RotateMatrix {
 
     private static void rotateMatrix(int matrix[][]) {
         int last = matrix.length - 1;
-        for (int r = 0; r < matrix.length; r++) {
+        for (int r = 0; r < matrix.length / 2; r++) {
             for (int c = r; c < last - r; c++) {
                 int top = matrix[r][c];
                 matrix[r][c] = matrix[last - c][r];
