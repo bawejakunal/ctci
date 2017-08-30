@@ -6,18 +6,19 @@ def drawline(array, width, x1, x2, y):
     start_off = x1 % 8
     first_full_byte = x1 // 8
     if (start_off > 0):
-        first_full_byte += 1
+        first_full_byte += 1    # current 0-index byte is partial
 
     end_off = x2 % 8
     last_full_byte = x2 // 8
-    if (end_off < 7):
+    if (end_off < 7):           # current byte is partial so full till previous
         last_full_byte -= 1
 
+    # fill full bytes
     for b in range(first_full_byte, last_full_byte + 1):
         array[y * (width // 8) + b] = 0xFF
 
-    start_mask = 0xFF >> start_off
-    end_mask = ~(~0 << 8) & ~(0xFF >> (end_off + 1))
+    start_mask = 0xFF >> start_off                      # trailing ones
+    end_mask = ~(~0 << 8) & ~(0xFF >> (end_off + 1))    # leading ones
 
     if (x1//8) == (x2//8):
         mask = start_mask & end_mask
