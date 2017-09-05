@@ -57,7 +57,7 @@ def countDP(counts, expr, result):
 
     # cached solution
     if expr in counts:
-        if expr[result] is not None:
+        if counts[expr][result] is not None:
             return counts[expr][result]
 
     # build solution
@@ -79,34 +79,34 @@ def countDP(counts, expr, result):
     for i in range(len(expr)-1):
         if expr[i] == '|':
             if result == 1:
-                leftTrue = countRecursive(expr[:i], 1)
-                leftFalse = countRecursive(expr[:i], 0)
-                rightTrue = countRecursive(expr[i+1:], 1)
-                rightFalse = countRecursive(expr[i+1:], 0)
+                leftTrue = countDP(counts, expr[:i], 1)
+                leftFalse = countDP(counts, expr[:i], 0)
+                rightTrue = countDP(counts, expr[i+1:], 1)
+                rightFalse = countDP(counts, expr[i+1:], 0)
                 count += leftTrue * rightTrue
                 count += leftTrue * rightFalse
                 count += leftFalse * rightTrue
             else:
-                leftFalse = countRecursive(expr[:i], 0)
-                rightFalse = countRecursive(expr[i+1:], 0)
+                leftFalse = countDP(counts, expr[:i], 0)
+                rightFalse = countDP(counts, expr[i+1:], 0)
                 count += leftFalse * rightFalse
 
         elif expr[i] == '&':
             left = 0
             right = 0
             if result == 1:
-                left = countRecursive(expr[:i], 1)
-                right = countRecursive(expr[i+1:], 1)
+                left = countDP(counts, expr[:i], 1)
+                right = countDP(counts, expr[i+1:], 1)
             else:
-                left = countRecursive(expr[:i], 0)
-                right = countRecursive(expr[i+1:], 0)
+                left = countDP(counts, expr[:i], 0)
+                right = countDP(counts, expr[i+1:], 0)
             count += left * right
 
         elif expr[i] == '^':
-            leftTrue = countRecursive(expr[:i], 1)
-            leftFalse = countRecursive(expr[:i], 0)
-            rightTrue = countRecursive(expr[i+1:], 1)
-            rightFalse = countRecursive(expr[i+1:], 0)
+            leftTrue = countDP(counts, expr[:i], 1)
+            leftFalse = countDP(counts, expr[:i], 0)
+            rightTrue = countDP(counts, expr[i+1:], 1)
+            rightFalse = countDP(counts, expr[i+1:], 0)
             if result == 1:
                 count += leftTrue * rightFalse
                 count += leftFalse * rightTrue
